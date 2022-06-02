@@ -54,7 +54,7 @@ if __name__ == "__main__":
     vgg_model = vgg16.VGG16(weights='imagenet')
     inception_model = inception_v3.InceptionV3(weights='imagenet')
     resnet_model = resnet50.ResNet50(weights='imagenet')
-    mobilenet_model = mobilenet.MobileNet(weights='cifar-10')
+    mobilenet_model = mobilenet.MobileNet(weights='imagenet')
 
     import matplotlib.pyplot as plt
     from tensorflow.keras.preprocessing.image import load_img
