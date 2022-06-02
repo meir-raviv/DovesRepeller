@@ -2,10 +2,19 @@ import matplotlib.pyplot as plt
 #!nvcc --version
 #!pip install mxnet-cu100
 #!pip install gluoncv
+import serial
+import time
 from mxnet import gluon, nd, image
 from mxnet.gluon.data.vision import transforms
 from gluoncv import utils
 from gluoncv.model_zoo import get_model
+
+arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
+def write_read(x):
+    arduino.write(bytes(x, 'utf-8'))
+    time.sleep(0.05)
+    data = arduino.readline()
+    return data
 
 transform_fn = transforms.Compose([
     transforms.Resize(32),
@@ -40,5 +49,10 @@ def detect(path):
 
 
 filepath = 'sample_data/images/'
-flag = detect(filepath)
-print(flag)
+
+while True:
+    res = detect(filepath)
+    if res:
+        value = write_read(1)
+    else:
+        value = write_read(0)
