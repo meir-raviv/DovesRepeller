@@ -9,6 +9,8 @@ from mxnet.gluon.data.vision import transforms
 from gluoncv import utils
 from gluoncv.model_zoo import get_model
 
+# http://192.168.255.227
+
 arduino = serial.Serial(port='COM4', baudrate=115200, timeout=.1)
 def write_read(x):
     arduino.write(bytes(x, 'utf-8'))
@@ -32,7 +34,11 @@ def detect(path):
             continue
         im_path = os.path.join(path, imgs)
 
-        img = image.imread(im_path)
+        url = 'http://192.168.255.227'
+        filename = 'current.jpg'
+        gluoncv.utils.download(url, filename)
+
+        img = image.imread(filename)
         img = transform_fn(img)
         pred = net(img.expand_dims(axis=0))
         # print(pred)
@@ -55,4 +61,5 @@ while True:
     if res:
         value = write_read(1)
     else:
-        value = write_read(0)
+        #value = write_read(0)
+        pass
